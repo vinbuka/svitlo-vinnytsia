@@ -1,0 +1,12 @@
+{
+  "name": "Світло Вінниця",
+  "short_name": "Світло",
+  "description": "Графік електропостачання у Вінниці",
+  "lang": "uk",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0b1220",
+  "theme_color": "#111827",
+  "icons": [{"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
+}
