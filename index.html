@@ -1,57 +1,329 @@
 <!doctype html>
 <html lang="uk">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#111827"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg" type="image/svg+xml"><title>Світло Вінниця</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b1220">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Світло">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>Світло Вінниця</title>
 <style>
 :root{--bg:#0b1220;--panel:#151f30;--panel2:#1d2a3e;--text:#f3f6fb;--muted:#9aa9bd;--line:#2b3a50;--on:#20b978;--off:#f4b400;--accent:#8b8cf6}
-*{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#101a2b,#0b1220 45%);color:var(--text);font:16px system-ui,-apple-system,Segoe UI,Roboto,sans-serif;min-height:100vh}
-.app{max-width:560px;margin:auto;padding:18px 14px 36px}.top{display:flex;align-items:center;justify-content:flex-end;gap:10px;margin:0 2px 8px}.brand{font-size:22px;font-weight:800;letter-spacing:-.5px}.brand span{color:#a5a6ff}.sub{color:var(--muted);font-size:12px;margin-top:2px}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:15px;margin:12px 0}.head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px}.head h2{font-size:17px;margin:0}.pill{border-radius:999px;padding:5px 9px;font-size:12px;background:#30304f;color:#c8c8ff;white-space:nowrap}.muted{color:var(--muted);font-size:13px}.tabs{display:grid;grid-template-columns:1fr 1fr;background:#101a2a;padding:4px;border-radius:14px;margin:14px 0}.weather-card{padding:13px 15px}.weather-main{display:flex;align-items:center;gap:13px}.weather-icon{font-size:38px;line-height:1}.weather-temp{font-size:30px;font-weight:850;letter-spacing:-1px}.weather-desc{font-size:13px;color:var(--muted);margin-top:1px}.weather-details{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.weather-detail{background:var(--panel2);border-radius:10px;padding:7px 9px;font-size:12px;color:#dce5f2}.weather-foot{font-size:10px;color:var(--muted);margin-top:9px}.weather-foot a{color:#a5a6ff}.tab{border:0;background:transparent;color:var(--muted);padding:12px;border-radius:11px;font-weight:800;font-size:15px}.tab.active{background:var(--panel2);color:var(--text)}
-.queues{display:flex;gap:8px;overflow-x:auto;padding:2px 0 10px}.queue-chip{flex:0 0 auto;min-width:100px;max-width:150px;border:1px solid var(--line);border-radius:14px;background:var(--panel);color:var(--text);padding:9px 12px;text-align:left}.queue-chip.active{border-color:var(--accent);background:#242744}.queue-chip b{display:block;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.queue-chip small{display:block;color:var(--muted);font-size:11px;margin-top:2px}.queue-actions{display:flex;gap:8px;margin:0 0 12px}.period{border-radius:14px;padding:13px 14px;background:#342b16;border:1px solid #5d4b1b;margin:9px 0;display:flex;align-items:center;justify-content:space-between;gap:8px}.period strong{font-size:21px;letter-spacing:.2px;color:#ffd45a}.period span{font-size:12px;color:#e8d9ae}.empty{color:var(--muted);text-align:center;padding:24px 8px;line-height:1.5}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}.hour{border-radius:11px;min-height:67px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:750;color:#111827;overflow:hidden;position:relative}.hour .time{font-size:14px;z-index:1}.hour small{font-size:10px;font-weight:650;z-index:1;margin-top:3px}.hour.off{background:var(--off)}.hour.on{background:var(--on);color:#062b1d}.hour.unknown{background:#526176;color:#fff}.hour.half-a{background:linear-gradient(90deg,var(--on) 0 50%,var(--off) 50% 100%);color:#10251c}.hour.half-b{background:linear-gradient(90deg,var(--off) 0 50%,var(--on) 50% 100%);color:#10251c}.legend{display:flex;gap:14px;flex-wrap:wrap;color:var(--muted);font-size:12px;margin-top:13px}.dot{width:9px;height:9px;border-radius:3px;display:inline-block;margin-right:5px}.primary{border:0;background:#7779ef;color:white;border-radius:12px;padding:11px 13px;font-weight:750}.secondary{border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:12px;padding:10px 12px;font-weight:650}.iconbtn{border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:12px;padding:9px 11px;font-size:17px}.statusline{font-size:12px;color:var(--muted);margin-top:7px;line-height:1.45}.modal{position:fixed;inset:0;background:#000b;display:flex;align-items:flex-end;justify-content:center;padding:12px;z-index:5}.modal.hidden{display:none}.sheet{width:min(560px,100%);background:#152135;border:1px solid var(--line);border-radius:22px 22px 16px 16px;padding:18px;max-height:90vh;overflow:auto}.sheet h2{margin:0 0 14px}.field{width:100%;border:1px solid var(--line);background:#0f1928;color:var(--text);padding:12px;border-radius:11px;font:inherit;margin:6px 0 13px}.sheet label{font-size:13px;color:#c0ccdc}.row{display:flex;gap:8px}.row>*{flex:1}
+*{box-sizing:border-box}[hidden]{display:none!important}
+body{margin:0;background:linear-gradient(180deg,#101a2b,#0b1220 45%) fixed;color:var(--text);font:16px system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;min-height:100vh;-webkit-text-size-adjust:100%}
+button{font:inherit;color:inherit;cursor:pointer}button:disabled{opacity:.4;cursor:default}
+button:focus-visible,.field:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.app{max-width:560px;margin:auto;padding:calc(12px + env(safe-area-inset-top)) 14px calc(70px + env(safe-area-inset-bottom))}
+.top{display:flex;align-items:center;justify-content:space-between;margin:0 2px 6px}.top h1{font-size:22px;font-weight:800;letter-spacing:-.5px;margin:0}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:14px;margin:10px 0}
+.head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}.head h2{font-size:17px;margin:0}
+.pill{border-radius:999px;padding:5px 9px;font-size:12px;background:#30304f;color:#c8c8ff;white-space:nowrap}
+.muted{color:var(--muted);font-size:13px}.statusline{font-size:12px;color:var(--muted);margin:4px 2px}
+.primary{border:0;background:#7779ef;color:#fff;border-radius:12px;padding:11px 13px;font-weight:750}
+.secondary{border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:12px;padding:10px 12px;font-weight:650}
+.iconbtn{border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:12px;padding:9px 11px;font-size:17px}
+.nav{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:center;gap:6px;padding:4px 14px calc(4px + env(safe-area-inset-bottom));background:#0b1220ee;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-top:1px solid var(--line);z-index:4}
+.nav button{flex:1;max-width:270px;border:0;background:transparent;color:var(--muted);padding:4px;border-radius:10px;font-size:11px;font-weight:700;display:flex;flex-direction:column;align-items:center;gap:0}
+.nav i{font-style:normal;font-size:18px;line-height:1}.nav .on{background:var(--panel2);color:var(--text)}
+.queues,.chips{display:flex;gap:8px;overflow-x:auto;padding:2px 0 10px}
+.queue-chip,.chip{flex:0 0 auto;border:1px solid var(--line);border-radius:14px;background:var(--panel);color:var(--text);text-align:left}
+.queue-chip{min-width:90px;max-width:150px;padding:8px 12px}.queue-chip b{display:block;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.queue-chip small{display:block;color:var(--muted);font-size:11px;margin-top:2px}.queue-chip.active,.chip.active{border-color:var(--accent);background:#242744}
+.chip{min-width:70px;padding:8px 10px;text-align:center}.chip b{display:block;font-size:13px}.chip small{color:var(--muted);font-size:12px}
+.qrow{display:flex;gap:6px;align-items:flex-start}.qrow .queues{flex:1;min-width:0;padding-bottom:6px}.qbtns{display:flex;gap:6px}.qbtns .iconbtn{padding:9px 11px;font-size:17px}.hbtns{display:flex;gap:8px}.secondary.sm{padding:8px 12px;font-size:13px}
+.tabs{display:grid;grid-template-columns:1fr 1fr;background:#101a2a;padding:3px;border-radius:12px;margin:8px 0 10px}
+.tab{border:0;background:transparent;color:var(--muted);padding:7px;border-radius:10px;font-weight:800;font-size:13px}.tab.active{background:var(--panel2);color:var(--text)}
+.cd{display:flex;align-items:center;justify-content:space-between;gap:10px}.cd-label{color:var(--muted);font-size:13px}.cd-time{font-size:40px;font-weight:850;letter-spacing:-1px;font-variant-numeric:tabular-nums;line-height:1.1}
+.cd-r{text-align:right}.cd-at{font-size:17px;font-weight:750}.cd-state{font-size:13px;color:var(--muted);margin-top:2px}
+.cd.on .cd-time,.cd.on .cd-at{color:#8ff0bd}.cd.off .cd-time,.cd.off .cd-at{color:#ffd45a}
+.periods{margin-bottom:10px}.period{border-radius:12px;padding:8px 12px;background:#342b16;border:1px solid #5d4b1b;margin:6px 0;display:flex;align-items:center;justify-content:space-between;gap:8px}.period strong{font-size:17px;letter-spacing:.2px;color:#ffd45a}.period span{font-size:11px;color:#e8d9ae}
+.period.pw{background:#123a2b;border-color:#206b4b}.period.pw strong{color:#8ff0bd}.period.pw span{color:#c4f4dc}
+.empty{color:var(--muted);text-align:center;padding:14px 6px;line-height:1.4}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.hour{border-radius:10px;height:40px;display:flex;align-items:center;justify-content:center;font-weight:750;font-size:14px;color:#111827}
+.hour.now{outline:2px solid #fff;outline-offset:1px}
+.hour.off{background:var(--off)}.hour.on{background:var(--on);color:#062b1d}.hour.unknown{background:#526176;color:#fff}
+.hour.half-a{background:linear-gradient(90deg,var(--on) 0 50%,var(--off) 50% 100%);color:#10251c}.hour.half-b{background:linear-gradient(90deg,var(--off) 0 50%,var(--on) 50% 100%);color:#10251c}
+.legend{display:flex;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:12px;margin-top:10px}.dot{width:9px;height:9px;border-radius:3px;display:inline-block;margin-right:5px}.card.news{display:block;text-decoration:none;color:inherit;margin:8px 0;padding:12px 14px}.news b{display:block;font-size:15px;line-height:1.35;margin-bottom:4px}.news small{color:var(--muted);font-size:12px}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(62px + env(safe-area-inset-bottom));background:#2b3a50;padding:9px 14px;border-radius:12px;font-size:13px;z-index:6}
+.citybar{display:flex;align-items:center;justify-content:space-between;gap:10px}.citybar b{font-size:20px;display:block}
+.weather-main{display:flex;align-items:center;gap:13px}.weather-icon{font-size:44px;line-height:1}.weather-temp{font-size:32px;font-weight:850;letter-spacing:-1px}
+.weather-desc{font-size:13px;color:var(--muted)}.now-line{margin-top:12px;font-size:14px}
+.weather-details{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.weather-detail{background:var(--panel2);border-radius:10px;padding:7px 9px;font-size:12px;color:#dce5f2}
+.parts{display:grid;grid-template-columns:1fr 1fr;gap:8px}.part{background:var(--panel2);border-radius:14px;padding:11px}
+.part .pn{font-size:12px;color:var(--muted)}.part .pi{float:right;font-size:26px}.part .pt{font-size:22px;font-weight:800;margin:2px 0}
+.part small{display:block;font-size:11px;color:var(--muted);line-height:1.4}
+.hourly{display:flex;gap:6px;overflow-x:auto;position:relative;padding-bottom:6px}
+.h{flex:0 0 56px;text-align:center;background:var(--panel2);border-radius:12px;padding:8px 2px;font-size:12px}.h.now{outline:2px solid var(--accent)}
+.h .ic{font-size:22px;margin:4px 0}.h b{display:block;font-size:15px}.h small{color:#8fc7ff;font-size:10px;display:block;min-height:12px}
+.weather-foot{font-size:11px;color:var(--muted);margin:10px 2px}.weather-foot a{color:#a5a6ff}
+.modal{position:fixed;inset:0;background:#000b;display:flex;align-items:flex-end;justify-content:center;padding:12px;z-index:5}.modal.hidden{display:none}
+.sheet{width:min(560px,100%);background:#152135;border:1px solid var(--line);border-radius:22px 22px 16px 16px;padding:18px;max-height:90vh;overflow:auto}
+.sheet h2{margin:0 0 14px}.sheet h3{font-size:14px;color:var(--muted);margin:14px 0 8px;font-weight:600}.sheet label{font-size:13px;color:#c0ccdc}
+.field{width:100%;border:1px solid var(--line);background:#0f1928;color:var(--text);padding:12px;border-radius:11px;font:inherit;margin:6px 0 13px}
+.row{display:flex;gap:8px}.row>*{flex:1}
+.crow{display:flex;gap:8px;margin-bottom:8px}.cbtn{flex:1;text-align:left;border:1px solid var(--line);background:var(--panel2);border-radius:12px;padding:10px 12px}
+.cbtn.active{border-color:var(--accent);background:#242744}.cbtn b{display:block}.cbtn small{color:var(--muted);font-size:12px}
 </style>
 </head>
-<body><main class="app">
-<header class="top"><button class="iconbtn" id="refresh" title="Оновити графік і погоду">↻</button></header>
-<div class="queues" id="queues"></div>
-<div class="queue-actions"><button class="primary" id="addQueue">＋ Додати чергу</button><button class="secondary" id="editQueue">Змінити</button><button class="secondary" id="deleteQueue">Видалити</button></div>
+<body>
+<main class="app">
+<header class="top"><h1 id="title">Графік світла</h1><div class="hbtns"><button class="iconbtn" id="share" aria-label="Поділитися">📤</button><button class="iconbtn" id="refresh" aria-label="Оновити графік і погоду">↻</button></div></header>
+
+<section id="view-power">
+<div class="qrow"><div class="queues" id="queues"></div><div class="qbtns"><button class="iconbtn" id="addQueue" aria-label="Додати чергу">＋</button><button class="iconbtn" id="editQueue" aria-label="Змінити чергу">✎</button><button class="iconbtn" id="deleteQueue" aria-label="Видалити чергу">🗑</button></div></div>
+<section class="card" style="padding:14px 16px"><div id="countdown"></div></section>
 <nav class="tabs"><button class="tab active" data-day="today">СЬОГОДНІ</button><button class="tab" data-day="tomorrow">ЗАВТРА</button></nav>
-<section class="card weather-card"><div class="head"><h2>Погода у Вінниці</h2><span class="muted" id="weatherDate">Завантажуємо…</span></div><div id="weatherContent"><div class="muted">Завантажуємо прогноз погоди…</div></div></section>
-<section class="card"><div class="head"><h2 id="dateTitle">Відключення</h2><div style="display:flex;gap:6px;align-items:center"><span class="muted" id="gridDateTop"></span><button class="secondary" id="togglePeriods" type="button">Показати: є світло</button></div></div><div id="periods"><div class="empty">Завантажуємо графік…</div></div></section>
-<section class="card"><div class="head"><h2>Графік на 24 години</h2><span class="muted" id="gridDate"></span></div><div class="grid" id="hours"></div><div class="legend"><span><i class="dot" style="background:var(--off)"></i>Немає світла</span><span><i class="dot" style="background:var(--on)"></i>Є світло</span><span><i class="dot" style="background:#526176"></i>Немає даних</span></div></section>
+<section class="card"><div class="head"><h2 id="dateTitle">Без світла</h2><div style="display:flex;gap:8px;align-items:center"><span class="muted" id="gridDateTop"></span><button class="secondary sm" id="togglePeriods" type="button">Є світло</button></div></div><div class="periods" id="periods"></div><div class="grid" id="hours"></div><div class="legend"><span><i class="dot" style="background:var(--off)"></i>Немає світла</span><span><i class="dot" style="background:var(--on)"></i>Є світло</span><span><i class="dot" style="background:#526176"></i>Немає даних</span></div></section>
+<p class="statusline" id="status"></p>
+</section>
+
+<section id="view-weather" hidden>
+<section class="card"><div class="citybar"><div><b id="cityName"></b><span class="muted" id="citySub"></span></div><button class="secondary" id="changeCity">📍 Змінити місто</button></div></section>
+<div class="chips" id="dayChips"></div>
+<div id="wBody"></div>
+</section>
+
+<section id="view-news" hidden>
+<div id="newsList"></div>
+<p class="statusline" id="newsStatus"></p>
+</section>
 </main>
-<div class="modal hidden" id="modal"><div class="sheet"><h2 id="modalTitle">Додати чергу</h2><label for="profileName">Назва (наприклад, Дім, Батьки, Робота)</label><input class="field" id="profileName" maxlength="30" placeholder="Дом"><label for="profileQueue">Номер черги</label><select class="field" id="profileQueue"></select><div class="row"><button class="primary" id="saveProfile">Зберегти</button><button class="secondary" id="cancelProfile">Скасувати</button></div></div></div>
+
+<nav class="nav" aria-label="Розділи"><button data-view="power"><i>💡</i>Світло</button><button data-view="weather"><i>⛅</i>Погода</button><button data-view="news"><i>📰</i>Новини</button></nav>
+
+<div class="toast" id="toast" hidden></div>
+<div class="modal hidden" id="modal"><div class="sheet"><h2 id="modalTitle">Додати чергу</h2><label for="profileName">Назва (наприклад, Дім, Батьки, Робота)</label><input class="field" id="profileName" maxlength="30" placeholder="Дім"><label for="profileQueue">Номер черги</label><select class="field" id="profileQueue"></select><div class="row"><button class="primary" id="saveProfile">Зберегти</button><button class="secondary" id="cancelProfile">Скасувати</button></div></div></div>
+
+<div class="modal hidden" id="cityModal"><div class="sheet"><h2>Місто для погоди</h2><label for="citySearch">Пошук міста</label><input class="field" id="citySearch" type="search" placeholder="Наприклад, Львів" autocomplete="off"><div id="cityResults"></div><h3>Збережені міста</h3><div id="savedCities"></div><button class="secondary" id="closeCity" style="width:100%;margin-top:6px">Закрити</button></div></div>
+
 <script>
-const DATA_URL='https://raw.githubusercontent.com/vn-progr/gpv-voe-vinnytsia/main/data/Vinnytsiaoblenerho.json';
-const WEATHER_URL='https://api.open-meteo.com/v1/forecast?latitude=49.2331&longitude=28.4682&daily=weather_code,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,precipitation_probability_max,precipitation_sum,wind_speed_10m_max&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm&timezone=Europe%2FKyiv&forecast_days=2';
-const WEATHER_CACHE_KEY='sv_vinnytsia_weather_v1';
-const CACHE_KEY='sv_vinnytsia_auto_cache_v2', PROFILE_KEY='sv_vinnytsia_profiles_v2', TZ='Europe/Kyiv';
-let dayMode='today',payload=null,loading=false,networkState='Очікування завантаження',profiles=[],activeProfile=0,editingIndex=-1,showPower=false,weatherPayload=null,weatherLoading=false;
+const DATA_URLS=['https://raw.githubusercontent.com/vn-progr/gpv-voe-vinnytsia/main/data/Vinnytsiaoblenerho.json','https://cdn.jsdelivr.net/gh/vn-progr/gpv-voe-vinnytsia@main/data/Vinnytsiaoblenerho.json'];
+const CACHE_KEY='sv_vinnytsia_auto_cache_v2',PROFILE_KEY='sv_vinnytsia_profiles_v2',ACTIVE_KEY='sv_active_queue_v1',TZ='Europe/Kyiv';
+const VIEW_KEY='sv_view_v1',CITY_KEY='sv_cities_v1',CITY_ACTIVE='sv_city_active_v1',WCACHE='sv_weather_v2';
 const $=id=>document.getElementById(id);
+const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(_){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(_){}}};
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const tzParts=(o,tz)=>Object.fromEntries(new Intl.DateTimeFormat('en-CA',{timeZone:tz,hourCycle:'h23',...o}).formatToParts(new Date()).map(x=>[x.type,x.value]));
+const dateFmt=new Intl.DateTimeFormat('en-CA',{timeZone:TZ,year:'numeric',month:'2-digit',day:'2-digit'});
+const kyivDate=(d=new Date())=>dateFmt.format(d),dateFromEpoch=s=>dateFmt.format(new Date(s*1000));
+const niceDate=s=>{if(!s)return '';const [y,m,d]=s.split('-');return `${d}.${m}.${y}`};
+const stamp=ts=>new Intl.DateTimeFormat('uk-UA',{hour:'2-digit',minute:'2-digit'}).format(new Date(ts));
+const kyivSecs=()=>{const p=tzParts({hour:'2-digit',minute:'2-digit',second:'2-digit'},TZ);return +p.hour*3600+ +p.minute*60+ +p.second};
+const pad=n=>String(n).padStart(2,'0');
+const VIEWS={power:'Графік світла',weather:'Погода',news:'Новини'};
+let view=(v=>VIEWS[v]?v:'power')(store.get(VIEW_KEY,'power'));
+
+/* ===== Світло ===== */
+let dayMode='today',payload=null,loading=false,networkState='',profiles=[],activeProfile=0,editingIndex=-1,showPower=false;
 const queueOptions=[];for(let g=1;g<=6;g++)for(let n=1;n<=2;n++)queueOptions.push(`${g}.${n}`);
-function loadProfiles(){try{profiles=JSON.parse(localStorage.getItem(PROFILE_KEY)||'null')||[]}catch(e){profiles=[]}if(profiles.length===1&&profiles[0]?.name==='Дом'&&profiles[0]?.queue==='5.2'){profiles=[];saveProfiles()}activeProfile=profiles.length?Math.min(activeProfile,profiles.length-1):0}
-function saveProfiles(){localStorage.setItem(PROFILE_KEY,JSON.stringify(profiles))}
-function currentProfile(){return profiles[activeProfile]||null}
-function kyivDate(d=new Date()){return new Intl.DateTimeFormat('en-CA',{timeZone:TZ,year:'numeric',month:'2-digit',day:'2-digit'}).format(d)}
-function dateFromEpoch(sec){return new Intl.DateTimeFormat('en-CA',{timeZone:TZ,year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(sec*1000))}
-function niceDate(s){if(!s)return '';let [y,m,d]=s.split('-');return `${d}.${m}.${y}`}
-function niceStamp(sec){if(!sec)return 'невідомо';return new Intl.DateTimeFormat('ru-RU',{timeZone:TZ,day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}).format(new Date(sec*1000))}
-function getDayEntry(mode){if(!payload?.fact?.data)return null;let target=new Date();if(mode==='tomorrow')target.setDate(target.getDate()+1);let wanted=kyivDate(target),keys=Object.keys(payload.fact.data),key=keys.find(k=>dateFromEpoch(Number(k))===wanted);return key?{date:wanted,record:payload.fact.data[key]}:null}
-function weatherInfo(code){const map={0:['☀️','Ясно'],1:['🌤️','Переважно ясно'],2:['⛅','Мінлива хмарність'],3:['☁️','Хмарно'],45:['🌫️','Туман'],48:['🌫️','Паморозний туман'],51:['🌦️','Легка мряка'],53:['🌦️','Мряка'],55:['🌧️','Сильна мряка'],56:['🌧️','Крижана мряка'],57:['🌧️','Крижана мряка'],61:['🌧️','Невеликий дощ'],63:['🌧️','Дощ'],65:['🌧️','Сильний дощ'],66:['🌧️','Крижаний дощ'],67:['🌧️','Сильний крижаний дощ'],71:['🌨️','Невеликий сніг'],73:['🌨️','Сніг'],75:['❄️','Сильний сніг'],77:['🌨️','Снігові зерна'],80:['🌦️','Короткочасний дощ'],81:['🌧️','Зливи'],82:['⛈️','Сильні зливи'],85:['🌨️','Снігові заряди'],86:['❄️','Сильні снігові заряди'],95:['⛈️','Гроза'],96:['⛈️','Гроза з градом'],99:['⛈️','Сильна гроза з градом']};return map[code]||['🌡️','Змінна погода']}
-function weatherTargetDate(){let d=new Date();if(dayMode==='tomorrow')d.setDate(d.getDate()+1);return kyivDate(d)}
-function renderWeather(){const daily=weatherPayload?.daily;if(!daily?.time){$('weatherDate').textContent='';$('weatherContent').innerHTML='<div class="muted">Прогноз тимчасово недоступний.</div>';return}const target=weatherTargetDate(),i=daily.time.indexOf(target);if(i<0){$('weatherDate').textContent='';$('weatherContent').innerHTML='<div class="muted">Немає даних для цієї дати.</div>';return}const [icon,desc]=weatherInfo(daily.weather_code[i]),num=(v,suffix='')=>v==null?'—':`${Math.round(v)}${suffix}`,prob=daily.precipitation_probability_max?.[i],rain=daily.precipitation_sum?.[i],wind=daily.wind_speed_10m_max?.[i],feelsMin=daily.apparent_temperature_min?.[i],feelsMax=daily.apparent_temperature_max?.[i];$('weatherDate').textContent=niceDate(target);$('weatherContent').innerHTML=`<div class="weather-main"><div class="weather-icon">${icon}</div><div><div class="weather-temp">${num(daily.temperature_2m_min?.[i],'°')} / ${num(daily.temperature_2m_max?.[i],'°')}</div><div class="weather-desc">${desc} · мін. / макс.</div></div></div><div class="weather-details"><span class="weather-detail">🌡️ Відчувається: ${num(feelsMin,'°')}…${num(feelsMax,'°')}</span><span class="weather-detail">🌧️ Опади: ${prob==null?'—':Math.round(prob)+'%'} · ${rain==null?'—':rain.toFixed(1)+' мм'}</span><span class="weather-detail">💨 Вітер до ${num(wind,' км/год')}</span></div><div class="weather-foot">Прогноз: <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a></div>`}
-async function loadWeather(force=false){if(weatherLoading)return;weatherLoading=true;try{const r=await fetch(WEATHER_URL,{cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);const j=await r.json();if(!j?.daily?.time)throw new Error('Невідомий формат прогнозу');weatherPayload=j;localStorage.setItem(WEATHER_CACHE_KEY,JSON.stringify(j))}catch(e){if(!weatherPayload){try{weatherPayload=JSON.parse(localStorage.getItem(WEATHER_CACHE_KEY)||'null')}catch(_){}}}finally{weatherLoading=false;renderWeather()}}
-function halfSlots(value){if(value==='yes')return ['on','on'];if(value==='no')return ['off','off'];if(value==='first')return ['on','off'];if(value==='second')return ['off','on'];return ['unknown','unknown']}
-function getSlots(entry){if(!entry||!currentProfile())return Array(48).fill('unknown');let q=entry.record['GPV'+currentProfile().queue];if(!q)return Array(48).fill('unknown');let out=[];for(let h=1;h<=24;h++)out.push(...halfSlots(q[String(h)]));return out}
-function rangesFromSlots(slots,wanted){let out=[],start=null;for(let i=0;i<=slots.length;i++){let match=i<slots.length&&slots[i]===wanted;if(match&&start===null)start=i;if(!match&&start!==null){out.push([start,i]);start=null}}return out.map(([a,b])=>`${fmt(a)}–${fmt(b)}`)}
-function fmt(i){let mins=i*30,h=Math.floor(mins/60),m=mins%60;return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`}
-function renderProfiles(){let root=$('queues');root.innerHTML='';profiles.forEach((p,i)=>{let b=document.createElement('button');b.className='queue-chip'+(i===activeProfile?' active':'');b.innerHTML=`<b>${escapeHtml(p.name)}</b><small>Черга ${escapeHtml(p.queue)}</small>`;b.onclick=()=>{activeProfile=i;renderProfiles();render()};root.append(b)});$('editQueue').disabled=!profiles.length;$('deleteQueue').disabled=profiles.length<=1}
-function escapeHtml(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function render(){let p=currentProfile(),entry=getDayEntry(dayMode),slots=getSlots(entry),date=entry?.date,wanted=showPower?'on':'off';$('dateTitle').textContent=showPower?'Періоди зі світлом':'Періоди відключень';$('togglePeriods').textContent=showPower?'Показати: відключення':'Показати: є світло';$('gridDateTop').textContent=date?niceDate(date):'';$('gridDate').textContent=date?niceDate(date):'—';$('periods').innerHTML='';if(!p){$('periods').innerHTML='<div class="empty">Додайте свою чергу, щоб побачити графік.</div>'}else if(!entry||!entry.record['GPV'+p.queue]){$('periods').innerHTML='<div class="empty">Графік на цю дату ще не опубліковано.</div>'}else{let rs=rangesFromSlots(slots,wanted);if(!rs.length)$('periods').innerHTML=`<div class="empty">${showPower?'В опублікованих даних немає періодів зі світлом.':'За опублікованим графіком відключень немає.'}</div>`;else rs.forEach(r=>{let d=document.createElement('div');d.className='period'+(showPower?' power':'');if(showPower){d.style.background='#123a2b';d.style.borderColor='#206b4b';}d.innerHTML=`<strong>${r}</strong><span>${showPower?'Є електроенергія':'Немає електроенергії'}</span>`;if(showPower){d.style.background='#123a2b';d.style.borderColor='#206b4b';d.querySelector('strong')?.style.setProperty('color','#8ff0bd');d.querySelector('span')?.style.setProperty('color','#c4f4dc')} $('periods').append(d)})}$('hours').innerHTML='';for(let h=0;h<24;h++){let a=slots[h*2],b=slots[h*2+1],state=a===b?a:(a==='on'&&b==='off'?'half-a':a==='off'&&b==='on'?'half-b':'unknown'),label=state==='off'?'Немає світла':state==='on'?'Є світло':state==='half-a'?'З 30-ї хв.':state==='half-b'?'Перші 30 хв.':'Немає даних',el=document.createElement('div');el.className='hour '+state;el.innerHTML=`<span class="time">${String(h).padStart(2,'0')}:00</span><small>${label}</small>`;$('hours').append(el)}}
-async function load(force=false){if(loading)return;loading=true;try{let url=DATA_URL+(force?'?t='+Date.now():'');let r=await fetch(url,{cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);let j=await r.json();if(!j?.fact?.data)throw new Error('Невідомий формат даних');payload=j;localStorage.setItem(CACHE_KEY,JSON.stringify(j));networkState='Дані оновлено'}catch(e){if(!payload){try{payload=JSON.parse(localStorage.getItem(CACHE_KEY)||'null')}catch(_){}}networkState=payload?'Немає зв’язку · показано збережений графік':'Не вдалося завантажити дані'}finally{loading=false;render()}}
-function openProfile(index=-1){editingIndex=index;let p=index<0?{name:'',queue:''}:profiles[index];$('modalTitle').textContent=index<0?'Додати чергу':'Змінити чергу';$('profileName').value=p.name;$('profileQueue').innerHTML='<option value="">Оберіть чергу</option>'+queueOptions.map(q=>`<option value="${q}">${q}</option>`).join('');$('profileQueue').value=p.queue;$('modal').classList.remove('hidden')}
-$('addQueue').onclick=()=>openProfile();$('editQueue').onclick=()=>openProfile(activeProfile);$('cancelProfile').onclick=()=>$('modal').classList.add('hidden');$('saveProfile').onclick=()=>{let name=$('profileName').value.trim(),queue=$('profileQueue').value;if(!name){alert('Вкажіть назву черги');return}if(!queue){alert('Оберіть номер черги');return}if(editingIndex<0){if(profiles.length>=12){alert('Можна додати до 12 черг');return}profiles.push({name,queue});activeProfile=profiles.length-1}else profiles[editingIndex]={name,queue};saveProfiles();$('modal').classList.add('hidden');renderProfiles();render()};$('deleteQueue').onclick=()=>{if(profiles.length<=1)return;if(confirm(`Видалити чергу «${currentProfile().name}»?`)){profiles.splice(activeProfile,1);activeProfile=Math.max(0,activeProfile-1);saveProfiles();renderProfiles();render()}};
-document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{dayMode=b.dataset.day;document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===b));render();renderWeather()});$('refresh').onclick=()=>{load(true);loadWeather(true)};$('togglePeriods').onclick=()=>{showPower=!showPower;render()};
-loadProfiles();renderProfiles();try{payload=JSON.parse(localStorage.getItem(CACHE_KEY)||'null')}catch(e){}render();renderWeather();load();loadWeather();setInterval(()=>load(),5*60*1000);setInterval(()=>loadWeather(true),30*60*1000);
-if ('serviceWorker' in navigator) { window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(()=>{})); }
-</script></body></html>
+const saveProfiles=()=>store.set(PROFILE_KEY,profiles);
+function loadProfiles(){profiles=store.get(PROFILE_KEY,null)||[];if(profiles.length===1&&profiles[0]?.name==='Дом'&&profiles[0]?.queue==='5.2'){profiles=[];saveProfiles()}activeProfile=Math.max(0,Math.min(+store.get(ACTIVE_KEY,0)||0,profiles.length-1))}
+const currentProfile=()=>profiles[activeProfile]||null;
+function getDayEntry(mode){if(!payload?.fact?.data)return null;const t=new Date();if(mode==='tomorrow')t.setDate(t.getDate()+1);const wanted=kyivDate(t),key=Object.keys(payload.fact.data).find(k=>dateFromEpoch(Number(k))===wanted);return key?{date:wanted,record:payload.fact.data[key]}:null}
+const halfSlots=v=>v==='yes'?['on','on']:v==='no'?['off','off']:v==='first'?['on','off']:v==='second'?['off','on']:['unknown','unknown'];
+function getSlots(entry){const p=currentProfile(),q=entry&&p&&entry.record['GPV'+p.queue];if(!q)return Array(48).fill('unknown');const out=[];for(let h=1;h<=24;h++)out.push(...halfSlots(q[String(h)]));return out}
+const fmt=i=>{const m=i*30;return `${pad(Math.floor(m/60))}:${pad(m%60)}`};
+function rangesFromSlots(slots,wanted){const out=[];let start=null;for(let i=0;i<=slots.length;i++){const match=i<slots.length&&slots[i]===wanted;if(match&&start===null)start=i;if(!match&&start!==null){out.push([start,i]);start=null}}return out.map(([a,b])=>`${fmt(a)}–${fmt(b)}`)}
+function hms(s){s=Math.max(0,s);return `${pad(Math.floor(s/3600))}:${pad(Math.floor(s%3600/60))}:${pad(s%60)}`}
+
+function calcCountdown(){
+  const p=currentProfile();if(!p)return{kind:'noprofile'};
+  const e0=getDayEntry('today');if(!e0||!e0.record['GPV'+p.queue])return{kind:'nodata'};
+  const all=getSlots(e0).concat(getSlots(getDayEntry('tomorrow'))),now=kyivSecs(),idx=Math.floor(now/1800),cur=all[idx];
+  if(cur==='unknown')return{kind:'nodata'};
+  for(let j=idx+1;j<all.length;j++){
+    if(all[j]===cur)continue;
+    if(all[j]==='unknown')break;
+    return{kind:'change',state:cur,left:j*1800-now,at:fmt(j%48),tomorrow:j>=48};
+  }
+  return{kind:'steady',state:cur};
+}
+function renderCountdown(){
+  const c=calcCountdown(),el=$('countdown');
+  if(c.kind==='noprofile'){el.innerHTML='<div class="empty">Додайте чергу, щоб бачити відлік</div>';return}
+  if(c.kind==='nodata'){el.innerHTML='<div class="empty">Немає даних про поточний стан</div>';return}
+  const on=c.state==='on',st=on?'Світло є':'Світла немає';
+  if(c.kind==='steady'){el.innerHTML=`<div class="cd ${on?'on':'off'}"><div class="cd-time" style="font-size:24px">${st}</div><div class="cd-state">Змін немає</div></div>`;return}
+  el.innerHTML=`<div class="cd ${on?'on':'off'}"><div><div class="cd-label">${on?'До вимкнення':'До увімкнення'}</div><div class="cd-time">${hms(c.left)}</div></div><div class="cd-r"><div class="cd-at">о ${c.at}${c.tomorrow?' (завтра)':''}</div><div class="cd-state">${st}</div></div></div>`;
+}
+function render(){
+  const p=currentProfile(),entry=getDayEntry(dayMode),slots=getSlots(entry),date=entry?.date,wanted=showPower?'on':'off',box=$('periods');
+  $('dateTitle').textContent=showPower?'Зі світлом':'Без світла';
+  $('togglePeriods').textContent=showPower?'Відключення':'Є світло';
+  $('gridDateTop').textContent=niceDate(date);
+  const empty=t=>`<div class="empty">${t}</div>`;
+  if(!p)box.innerHTML=empty('Додайте чергу');
+  else if(!entry||!entry.record['GPV'+p.queue])box.innerHTML=empty('Графік ще не опубліковано');
+  else{const rs=rangesFromSlots(slots,wanted);box.innerHTML=rs.length?rs.map(r=>`<div class="period${showPower?' pw':''}"><strong>${r}</strong><span>${showPower?'Є електроенергія':'Немає електроенергії'}</span></div>`).join(''):empty(showPower?'Немає періодів зі світлом':'Відключень немає')}
+  const nowH=Math.floor(kyivSecs()/3600);let html='';
+  for(let h=0;h<24;h++){const a=slots[h*2],b=slots[h*2+1],state=a===b?a:(a==='on'&&b==='off'?'half-a':a==='off'&&b==='on'?'half-b':'unknown');
+    html+=`<div class="hour ${state}${dayMode==='today'&&h===nowH?' now':''}">${pad(h)}:00</div>`}
+  $('hours').innerHTML=html;
+  $('status').textContent=networkState;
+  renderCountdown();
+}
+function renderProfiles(){
+  $('queues').innerHTML=profiles.map((p,i)=>`<button class="queue-chip${i===activeProfile?' active':''}" data-i="${i}"><b>${esc(p.name)}</b><small>Черга ${esc(p.queue)}</small></button>`).join('');
+  $('editQueue').disabled=!profiles.length;$('deleteQueue').disabled=profiles.length<=1;
+}
+async function load(force=false){
+  if(loading)return;loading=true;let err='';
+  for(const base of DATA_URLS){
+    try{const r=await fetch(base+(force?'?t='+Date.now():''),{cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);const j=await r.json();if(!j?.fact?.data)throw new Error('невідомий формат даних');payload=j;store.set(CACHE_KEY,j);networkState='Графік оновлено о '+stamp(Date.now());err='';break}
+    catch(e){err=e.message||String(e)}
+  }
+  if(err){if(!payload)payload=store.get(CACHE_KEY,null);networkState=payload?`Немає свіжих даних (${err}) · показано збережений графік`:`Не вдалося завантажити дані (${err})`}
+  else if(!getDayEntry('today')){const ks=Object.keys(payload.fact.data).map(Number).sort((x,y)=>y-x);networkState+=' · у джерелі немає графіка на сьогодні'+(ks.length?', останній — '+niceDate(dateFromEpoch(ks[0])):'')}
+  loading=false;render();
+}
+function openProfile(index=-1){editingIndex=index;const p=index<0?{name:'',queue:''}:profiles[index];$('modalTitle').textContent=index<0?'Додати чергу':'Змінити чергу';$('profileName').value=p.name;$('profileQueue').innerHTML='<option value="">Оберіть чергу</option>'+queueOptions.map(q=>`<option value="${q}">${q}</option>`).join('');$('profileQueue').value=p.queue;$('modal').classList.remove('hidden')}
+function setActive(i){activeProfile=i;store.set(ACTIVE_KEY,i)}
+$('queues').onclick=e=>{const b=e.target.closest('[data-i]');if(b){setActive(+b.dataset.i);renderProfiles();render()}};
+$('addQueue').onclick=()=>openProfile();$('editQueue').onclick=()=>openProfile(activeProfile);$('cancelProfile').onclick=()=>$('modal').classList.add('hidden');
+$('saveProfile').onclick=()=>{const name=$('profileName').value.trim(),queue=$('profileQueue').value;if(!name){alert('Вкажіть назву черги');return}if(!queue){alert('Оберіть номер черги');return}
+  if(editingIndex<0){if(profiles.length>=12){alert('Можна додати до 12 черг');return}profiles.push({name,queue});setActive(profiles.length-1)}else profiles[editingIndex]={name,queue};
+  saveProfiles();$('modal').classList.add('hidden');renderProfiles();render()};
+$('deleteQueue').onclick=()=>{if(profiles.length<=1)return;if(confirm(`Видалити чергу «${currentProfile().name}»?`)){profiles.splice(activeProfile,1);setActive(Math.max(0,activeProfile-1));saveProfiles();renderProfiles();render()}};
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{dayMode=b.dataset.day;document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===b));render()});
+$('togglePeriods').onclick=()=>{showPower=!showPower;render()};
+
+/* ===== Погода ===== */
+const DEFAULT_CITY={name:'Вінниця',admin:'Вінницька область, Україна',lat:49.2331,lon:28.4682};
+let cities=store.get(CITY_KEY,null);if(!Array.isArray(cities)||!cities.length)cities=[DEFAULT_CITY];
+let cityIdx=Math.max(0,Math.min(+store.get(CITY_ACTIVE,0)||0,cities.length-1)),wCache=store.get(WCACHE,{}),wDay=null,wLoading=false,wReq=0;
+const ckey=c=>`${c.lat.toFixed(2)},${c.lon.toFixed(2)}`;
+const wInfo=code=>({0:['☀️','Ясно'],1:['🌤️','Переважно ясно'],2:['⛅','Мінлива хмарність'],3:['☁️','Хмарно'],45:['🌫️','Туман'],48:['🌫️','Паморозний туман'],51:['🌦️','Легка мряка'],53:['🌦️','Мряка'],55:['🌧️','Сильна мряка'],56:['🌧️','Крижана мряка'],57:['🌧️','Крижана мряка'],61:['🌧️','Невеликий дощ'],63:['🌧️','Дощ'],65:['🌧️','Сильний дощ'],66:['🌧️','Крижаний дощ'],67:['🌧️','Сильний крижаний дощ'],71:['🌨️','Невеликий сніг'],73:['🌨️','Сніг'],75:['❄️','Сильний сніг'],77:['🌨️','Снігові зерна'],80:['🌦️','Короткочасний дощ'],81:['🌧️','Зливи'],82:['⛈️','Сильні зливи'],85:['🌨️','Снігові заряди'],86:['❄️','Сильні снігові заряди'],95:['⛈️','Гроза'],96:['⛈️','Гроза з градом'],99:['⛈️','Сильна гроза з градом']}[code]||['🌡️','Змінна погода']);
+const num=(v,s='')=>v==null?'—':Math.round(v)+s;
+const fmtD=(d,o)=>new Intl.DateTimeFormat('uk-UA',{timeZone:'UTC',...o}).format(new Date(d+'T12:00:00Z'));
+const addDay=d=>new Date(Date.parse(d+'T12:00:00Z')+864e5).toISOString().slice(0,10);
+const avg=a=>{a=a.filter(x=>x!=null);return a.length?a.reduce((s,x)=>s+x,0)/a.length:null};
+const weatherUrl=c=>`https://api.open-meteo.com/v1/forecast?latitude=${c.lat}&longitude=${c.lon}&current=temperature_2m,apparent_temperature,weather_code&hourly=temperature_2m,precipitation_probability,precipitation,weather_code,wind_speed_10m,relative_humidity_2m&daily=weather_code,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,precipitation_probability_max,precipitation_sum,wind_speed_10m_max,sunrise,sunset,uv_index_max&wind_speed_unit=kmh&timezone=auto&forecast_days=7`;
+async function loadWeather(){
+  const c=cities[cityIdx],req=++wReq;wLoading=true;
+  try{const r=await fetch(weatherUrl(c),{cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);const j=await r.json();if(!j?.daily?.time)throw new Error('format');
+    wCache[ckey(c)]={ts:Date.now(),data:j};const keep=new Set(cities.map(ckey));Object.keys(wCache).forEach(k=>keep.has(k)||delete wCache[k]);store.set(WCACHE,wCache)}
+  catch(e){}
+  if(req===wReq){wLoading=false;renderWeather()}
+}
+function renderWeather(){
+  if(view!=='weather')return;
+  const c=cities[cityIdx],cached=wCache[ckey(c)],W=cached?.data,body=$('wBody'),chips=$('dayChips');
+  $('cityName').textContent=c.name;$('citySub').textContent=c.admin||'';
+  if(!W?.daily?.time){chips.innerHTML='';body.innerHTML=`<div class="empty">${wLoading?'Завантажуємо прогноз…':'Прогноз тимчасово недоступний. Перевірте з’єднання та натисніть ↻.'}</div>`;return}
+  const D=W.daily,H=W.hourly,now=tzParts({year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit'},W.timezone),today=`${now.year}-${now.month}-${now.day}`,nowH=+now.hour;
+  let days=D.time.map((_,i)=>i).filter(i=>D.time[i]>=today);if(!days.length)days=D.time.map((_,i)=>i);
+  if(!days.some(i=>D.time[i]===wDay))wDay=D.time[days[0]];
+  chips.innerHTML=days.map(i=>{const d=D.time[i],l=d===today?'Сьогодні':d===addDay(today)?'Завтра':fmtD(d,{weekday:'short',day:'numeric'});return `<button class="chip${d===wDay?' active':''}" data-d="${d}"><b>${l}</b><small>${num(D.temperature_2m_max[i],'°')}</small></button>`}).join('');
+  const i=D.time.indexOf(wDay),hrs=[];H.time.forEach((t,k)=>{if(t.startsWith(wDay))hrs.push(k)});
+  const night=t=>t<D.sunrise[i]||t>=D.sunset[i],icon=(code,t)=>night(t)&&code<2?'🌙':wInfo(code)[0];
+  const [ic,desc]=wInfo(D.weather_code[i]),isToday=wDay===today,cur=isToday?W.current:null,prob=D.precipitation_probability_max[i],rain=D.precipitation_sum[i];
+  const summary=`<section class="card"><div class="head"><h2>${fmtD(wDay,{weekday:'long',day:'numeric',month:'long'})}</h2></div>
+<div class="weather-main"><div class="weather-icon">${ic}</div><div><div class="weather-temp">${num(D.temperature_2m_min[i],'°')} / ${num(D.temperature_2m_max[i],'°')}</div><div class="weather-desc">${desc} · мін. / макс.</div></div></div>
+${cur?`<div class="now-line">Зараз ${num(cur.temperature_2m,'°')}, відчувається ${num(cur.apparent_temperature,'°')} · ${wInfo(cur.weather_code)[1].toLowerCase()}</div>`:''}
+<div class="weather-details"><span class="weather-detail">🌡️ Відчувається: ${num(D.apparent_temperature_min[i],'°')}…${num(D.apparent_temperature_max[i],'°')}</span><span class="weather-detail">🌧️ Опади: ${prob==null?'—':Math.round(prob)+'%'} · ${rain==null?'—':rain.toFixed(1)+' мм'}</span><span class="weather-detail">💨 Вітер до ${num(D.wind_speed_10m_max[i],' км/год')}</span><span class="weather-detail">💧 Вологість: ${num(avg(hrs.map(k=>H.relative_humidity_2m[k])),'%')}</span><span class="weather-detail">🌅 ${(D.sunrise[i]||'').slice(11,16)||'—'} · 🌇 ${(D.sunset[i]||'').slice(11,16)||'—'}</span><span class="weather-detail">🕶️ УФ-індекс: ${num(D.uv_index_max[i])}</span></div></section>`;
+  const pt=[];
+  const partsHtml=[['Ніч',0,6],['Ранок',6,12],['День',12,18],['Вечір',18,24]].map(([n,a,b])=>{
+    const ks=hrs.slice(a,b);if(!ks.length)return '';
+    const wet=ks.reduce((m,k)=>(H.precipitation[k]||0)>(H.precipitation[m]||0)?k:m,ks[0]),k0=(H.precipitation[wet]||0)>=.1?wet:ks[Math.min(3,ks.length-1)],
+      pr=Math.max(...ks.map(k=>H.precipitation_probability[k]||0)),mm=ks.reduce((s,k)=>s+(H.precipitation[k]||0),0),wind=Math.max(...ks.map(k=>H.wind_speed_10m[k]||0));
+    const tt=num(avg(ks.map(k=>H.temperature_2m[k])),'°');pt.push(`${n} ${tt}`);
+    return `<div class="part"><span class="pi">${icon(H.weather_code[k0],H.time[k0])}</span><div class="pn">${n}</div><div class="pt">${tt}</div><small>${wInfo(H.weather_code[k0])[1]}</small><small>💧 ${Math.round(pr)}% · ${mm.toFixed(1)} мм</small><small>💨 до ${Math.round(wind)} км/год</small></div>`}).join('');
+  const hourly=hrs.map(k=>{const t=H.time[k],pp=H.precipitation_probability[k];return `<div class="h${isToday&&+t.slice(11,13)===nowH?' now':''}"><span>${t.slice(11,16)}</span><div class="ic">${icon(H.weather_code[k],t)}</div><b>${num(H.temperature_2m[k],'°')}</b><small>${pp>=10?'💧'+pp+'%':''}</small></div>`}).join('');
+  const dn=fmtD(wDay,{weekday:'long',day:'numeric',month:'long'});
+  wText=`${ic} Погода · ${c.name}\n${dn[0].toUpperCase()+dn.slice(1)}\n${desc}, ${num(D.temperature_2m_min[i],'°')} / ${num(D.temperature_2m_max[i],'°')}\n🌧 Опади: ${prob==null?'—':Math.round(prob)+'%'}, ${rain==null?'—':rain.toFixed(1)+' мм'} · 💨 до ${num(D.wind_speed_10m_max[i],' км/год')}\n${pt.join(' · ')}`;
+  body.innerHTML=summary+`<section class="card"><div class="head"><h2>Частини доби</h2></div><div class="parts">${partsHtml}</div></section><section class="card"><div class="head"><h2>По годинах</h2></div><div class="hourly" id="hourly">${hourly}</div></section><p class="weather-foot">Прогноз: <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a> · оновлено о ${stamp(cached.ts)}</p>`;
+  const cn=body.querySelector('.h.now');if(cn)$('hourly').scrollLeft=Math.max(0,cn.offsetLeft-8);
+}
+$('dayChips').onclick=e=>{const b=e.target.closest('[data-d]');if(b){wDay=b.dataset.d;renderWeather()}};
+
+/* вибір міста */
+let found=[],searchTimer,wText='';
+function renderCityList(){$('savedCities').innerHTML=cities.map((c,i)=>`<div class="crow"><button class="cbtn${i===cityIdx?' active':''}" data-i="${i}"><b>${esc(c.name)}</b><small>${esc(c.admin||'')}</small></button><button class="iconbtn" data-del="${i}" aria-label="Видалити місто"${cities.length<2?' disabled':''}>✕</button></div>`).join('')}
+function selectCity(i){cityIdx=i;store.set(CITY_ACTIVE,i);wDay=null;$('cityModal').classList.add('hidden');renderWeather();loadWeather()}
+function addCity(c){
+  const ex=cities.findIndex(x=>Math.abs(x.lat-c.lat)<.01&&Math.abs(x.lon-c.lon)<.01);
+  if(ex>=0)return selectCity(ex);
+  if(cities.length>=8){alert('Можна зберегти до 8 міст. Видаліть зайве.');return}
+  cities.push(c);store.set(CITY_KEY,cities);selectCity(cities.length-1);
+}
+function delCity(i){if(cities.length<2)return;const wasActive=i===cityIdx;cities.splice(i,1);if(i<cityIdx)cityIdx--;cityIdx=Math.min(cityIdx,cities.length-1);store.set(CITY_KEY,cities);store.set(CITY_ACTIVE,cityIdx);renderCityList();if(wasActive){wDay=null;renderWeather();loadWeather()}}
+async function searchCity(q){
+  const box=$('cityResults');box.innerHTML='<div class="muted">Шукаємо…</div>';
+  try{const r=await fetch('https://geocoding-api.open-meteo.com/v1/search?count=8&language=uk&name='+encodeURIComponent(q));if(!r.ok)throw 0;const j=await r.json();if($('citySearch').value.trim()!==q)return;
+    found=(j.results||[]).map(x=>({name:x.name,admin:[x.admin1,x.country].filter(Boolean).join(', '),lat:x.latitude,lon:x.longitude}));
+    box.innerHTML=found.length?found.map((c,i)=>`<div class="crow"><button class="cbtn" data-f="${i}"><b>${esc(c.name)}</b><small>${esc(c.admin)}</small></button></div>`).join(''):'<div class="muted">Нічого не знайдено. Спробуйте іншу назву.</div>'}
+  catch(_){box.innerHTML='<div class="muted">Не вдалося виконати пошук. Перевірте з’єднання.</div>'}
+}
+$('changeCity').onclick=()=>{renderCityList();$('citySearch').value='';$('cityResults').innerHTML='';$('cityModal').classList.remove('hidden')};
+$('closeCity').onclick=()=>$('cityModal').classList.add('hidden');
+$('cityModal').onclick=e=>{if(e.target===$('cityModal'))$('cityModal').classList.add('hidden')};
+$('citySearch').oninput=e=>{clearTimeout(searchTimer);const q=e.target.value.trim();if(q.length<2){$('cityResults').innerHTML='';return}searchTimer=setTimeout(()=>searchCity(q),350)};
+$('cityResults').onclick=e=>{const b=e.target.closest('[data-f]');if(b)addCity(found[+b.dataset.f])};
+$('savedCities').onclick=e=>{const d=e.target.closest('[data-del]');if(d)return delCity(+d.dataset.del);const b=e.target.closest('[data-i]');if(b)selectCity(+b.dataset.i)};
+
+/* ===== Новини ===== */
+const FEEDS=[{name:'20 хвилин · Вінниця',url:'https://vn.20minut.ua/rss'}];
+const NEWS_KEY='sv_news_v1';let news=store.get(NEWS_KEY,{ts:0,items:[]}),newsLoading=false,newsFailed=false;
+const dec=t=>{const e=document.createElement('textarea');e.innerHTML=t||'';return e.value.trim()};
+async function fetchFeed(f){
+  try{const r=await fetch('https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent(f.url));const j=await r.json();if(j.status!=='ok')throw 0;
+    return j.items.map(i=>({title:dec(i.title),link:i.link,ts:Date.parse(String(i.pubDate).replace(' ','T')+'Z'),src:f.name}))}
+  catch(_){const r=await fetch('https://api.allorigins.win/raw?url='+encodeURIComponent(f.url));if(!r.ok)throw 0;const x=new DOMParser().parseFromString(await r.text(),'text/xml');
+    return [...x.querySelectorAll('item')].map(i=>{const g=t=>i.querySelector(t)?.textContent||'';return{title:dec(g('title')),link:g('link').trim(),ts:Date.parse(g('pubDate')),src:f.name}})}
+}
+async function loadNews(force){
+  if(newsLoading||(!force&&news.items.length&&Date.now()-news.ts<5*60*1000))return;
+  newsLoading=true;newsFailed=false;renderNews();
+  const res=await Promise.allSettled(FEEDS.map(fetchFeed)),items=res.flatMap(r=>r.status==='fulfilled'?r.value:[]).filter(i=>i.title&&/^https?:\/\//.test(i.link||''));
+  if(items.length){items.sort((a,b)=>(b.ts||0)-(a.ts||0));news={ts:Date.now(),items:items.slice(0,25)};store.set(NEWS_KEY,news)}else newsFailed=true;
+  newsLoading=false;renderNews();
+}
+const ago=ts=>{if(!ts)return '';const m=Math.round((Date.now()-ts)/6e4);return m<1?'щойно':m<60?m+' хв тому':m<1440?Math.floor(m/60)+' год тому':new Intl.DateTimeFormat('uk-UA',{day:'numeric',month:'long'}).format(new Date(ts))};
+function renderNews(){
+  if(view!=='news')return;
+  $('newsList').innerHTML=news.items.length?news.items.map(i=>`<a class="card news" href="${esc(i.link)}" target="_blank" rel="noopener"><b>${esc(i.title)}</b><small>${esc(i.src)} · ${ago(i.ts)}</small></a>`).join(''):`<div class="empty">${newsLoading?'Завантажуємо новини…':'Не вдалося завантажити новини. Перевірте з’єднання та натисніть ↻.'}</div>`;
+  $('newsStatus').textContent=news.ts?(newsFailed?'Немає зв’язку · показано збережені новини · ':'')+'Оновлено о '+stamp(news.ts):'';
+}
+const newsText=()=>news.items.length?'📰 Новини Вінниці\n'+news.items.slice(0,5).map(i=>`• ${i.title}\n${i.link}`).join('\n'):'';
+
+/* ===== Загальне ===== */
+function setView(v){
+  view=v;store.set(VIEW_KEY,v);
+  Object.keys(VIEWS).forEach(k=>$('view-'+k).hidden=k!==v);
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('on',b.dataset.view===v));
+  $('title').textContent=VIEWS[v];
+  if(v==='power')render();else if(v==='weather')renderWeather();else{renderNews();loadNews()}
+}
+document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>setView(b.dataset.view));
+function scheduleText(){
+  const p=currentProfile();if(!p)return '';
+  const e=getDayEntry(dayMode),d=dayMode==='today'?'Сьогодні':'Завтра';
+  if(!e||!e.record['GPV'+p.queue])return `💡 ${p.name} · черга ${p.queue}\n${d}: графік ще не опубліковано`;
+  const sl=getSlots(e),off=rangesFromSlots(sl,'off'),on=rangesFromSlots(sl,'on');
+  return `💡 ${p.name} · черга ${p.queue}\n${d}, ${niceDate(e.date)}\n🔴 Відключення: ${off.length?off.join(', '):'немає'}\n🟢 Світло: ${on.length?on.join(', '):'немає'}`;
+}
+let toastT;function toast(t){const el=$('toast');el.textContent=t;el.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>el.hidden=true,2200)}
+$('share').onclick=async()=>{
+  const text=view==='power'?scheduleText():view==='weather'?wText:view==='news'?newsText():'';
+  if(!text){toast(view==='power'?'Спочатку додайте чергу':'Поки немає що надсилати');return}
+  if(navigator.share){try{await navigator.share({text});return}catch(e){if(e.name==='AbortError')return}}
+  try{await navigator.clipboard.writeText(text);toast('Текст скопійовано')}catch(_){}
+  location.href='viber://forward?text='+encodeURIComponent(text);
+};
+$('refresh').onclick=()=>{if(view==='news')loadNews(true);else{load(true);loadWeather()}};
+document.addEventListener('visibilitychange',()=>{if(!document.hidden){render();renderWeather();load();loadWeather();if(view==='news')loadNews()}});
+
+loadProfiles();renderProfiles();payload=store.get(CACHE_KEY,null);
+setView(view);load();loadWeather();
+setInterval(()=>{if(view==='power')renderCountdown()},1000);
+setInterval(()=>load(),5*60*1000);setInterval(()=>{if(view==='news')loadNews()},10*60*1000);setInterval(()=>loadWeather(),30*60*1000);
+if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+</script>
+</body>
+</html>
