@@ -103,7 +103,9 @@ button:focus-visible,.field:focus-visible{outline:2px solid var(--accent);outlin
 <div class="modal hidden" id="cityModal"><div class="sheet"><h2>Місто для погоди</h2><label for="citySearch">Пошук міста</label><input class="field" id="citySearch" type="search" placeholder="Наприклад, Львів" autocomplete="off"><div id="cityResults"></div><h3>Збережені міста</h3><div id="savedCities"></div><button class="secondary" id="closeCity" style="width:100%;margin-top:6px">Закрити</button></div></div>
 
 <script>
-const DATA_URLS=['https://raw.githubusercontent.com/vn-progr/gpv-voe-vinnytsia/main/data/Vinnytsiaoblenerho.json','https://cdn.jsdelivr.net/gh/vn-progr/gpv-voe-vinnytsia@main/data/Vinnytsiaoblenerho.json'];
+const DB='/gpv-voe-vinnytsia',FILE='/data/Vinnytsiaoblenerho.json';
+const SOURCES=[{n:'vn-progr',u:'https://raw.githubusercontent.com/vn-progr'+DB+'/main'+FILE},{n:'olnet93',u:'https://raw.githubusercontent.com/olnet93'+DB+'/main'+FILE}];
+const MIRRORS=[{n:'vn-progr, CDN',u:'https://cdn.jsdelivr.net/gh/vn-progr'+DB+'@main'+FILE},{n:'olnet93, CDN',u:'https://cdn.jsdelivr.net/gh/olnet93'+DB+'@main'+FILE}];
 const CACHE_KEY='sv_vinnytsia_auto_cache_v2',PROFILE_KEY='sv_vinnytsia_profiles_v2',ACTIVE_KEY='sv_active_queue_v1',TZ='Europe/Kyiv';
 const VIEW_KEY='sv_view_v1',CITY_KEY='sv_cities_v1',CITY_ACTIVE='sv_city_active_v1',WCACHE='sv_weather_v2';
 const $=id=>document.getElementById(id);
@@ -130,6 +132,7 @@ const halfSlots=v=>v==='yes'?['on','on']:v==='no'?['off','off']:v==='first'?['on
 function getSlots(entry){const p=currentProfile(),q=entry&&p&&entry.record['GPV'+p.queue];if(!q)return Array(48).fill('unknown');const out=[];for(let h=1;h<=24;h++)out.push(...halfSlots(q[String(h)]));return out}
 const fmt=i=>{const m=i*30;return `${pad(Math.floor(m/60))}:${pad(m%60)}`};
 function rangesFromSlots(slots,wanted){const out=[];let start=null;for(let i=0;i<=slots.length;i++){const match=i<slots.length&&slots[i]===wanted;if(match&&start===null)start=i;if(!match&&start!==null){out.push([start,i]);start=null}}return out.map(([a,b])=>`${fmt(a)}–${fmt(b)}`)}
+const dayLooksEmpty=e=>{if(!e)return false;const q=Object.keys(e.record).filter(k=>k.startsWith('GPV'));return q.length>0&&q.every(k=>Object.values(e.record[k]).every(v=>v==='yes'))};
 function hms(s){s=Math.max(0,s);return `${pad(Math.floor(s/3600))}:${pad(Math.floor(s%3600/60))}:${pad(s%60)}`}
 
 function calcCountdown(){
@@ -140,7 +143,7 @@ function calcCountdown(){
   for(let j=idx+1;j<all.length;j++){
     if(all[j]===cur)continue;
     if(all[j]==='unknown')break;
-    return{kind:'change',state:cur,left:j*1800-now,at:fmt(j%48),tomorrow:j>=48};
+    return{kind:'change',state:cur,left:j*1800-now,at:fmt(j%48),tomorrow:j>=48,prelim:j>=48&&dayLooksEmpty(getDayEntry('tomorrow'))};
   }
   return{kind:'steady',state:cur};
 }
@@ -150,7 +153,7 @@ function renderCountdown(){
   if(c.kind==='nodata'){el.innerHTML='<div class="empty">Немає даних про поточний стан</div>';return}
   const on=c.state==='on',st=on?'Світло є':'Світла немає';
   if(c.kind==='steady'){el.innerHTML=`<div class="cd ${on?'on':'off'}"><div class="cd-time" style="font-size:24px">${st}</div><div class="cd-state">Змін немає</div></div>`;return}
-  el.innerHTML=`<div class="cd ${on?'on':'off'}"><div><div class="cd-label">${on?'До вимкнення':'До увімкнення'}</div><div class="cd-time">${hms(c.left)}</div></div><div class="cd-r"><div class="cd-at">о ${c.at}${c.tomorrow?' (завтра)':''}</div><div class="cd-state">${st}</div></div></div>`;
+  el.innerHTML=`<div class="cd ${on?'on':'off'}"><div><div class="cd-label">${on?'До вимкнення':'До увімкнення'}</div><div class="cd-time">${hms(c.left)}</div></div><div class="cd-r"><div class="cd-at">о ${c.at}${c.tomorrow?(c.prelim?' (завтра, попередньо)':' (завтра)'):''}</div><div class="cd-state">${st}</div></div></div>`;
 }
 function render(){
   const p=currentProfile(),entry=getDayEntry(dayMode),slots=getSlots(entry),date=entry?.date,wanted=showPower?'on':'off',box=$('periods');
@@ -159,8 +162,8 @@ function render(){
   $('gridDateTop').textContent=niceDate(date);
   const empty=t=>`<div class="empty">${t}</div>`;
   if(!p)box.innerHTML=empty('Додайте чергу');
-  else if(!entry||!entry.record['GPV'+p.queue])box.innerHTML=empty('Графік ще не опубліковано');
-  else{const rs=rangesFromSlots(slots,wanted);box.innerHTML=rs.length?rs.map(r=>`<div class="period${showPower?' pw':''}"><strong>${r}</strong><span>${showPower?'Є електроенергія':'Немає електроенергії'}</span></div>`).join(''):empty(showPower?'Немає періодів зі світлом':'Відключень немає')}
+  else if(!entry||!entry.record['GPV'+p.queue])box.innerHTML=empty(`Графік на ${dayMode==='today'?'сьогодні':'завтра'} ще не опубліковано`);
+  else{const rs=rangesFromSlots(slots,wanted);box.innerHTML=rs.length?rs.map(r=>`<div class="period${showPower?' pw':''}"><strong>${r}</strong><span>${showPower?'Є електроенергія':'Немає електроенергії'}</span></div>`).join(''):empty(showPower?'Немає періодів зі світлом':dayMode==='tomorrow'&&dayLooksEmpty(entry)?'Схоже, графік на завтра ще не опубліковано: у джерелі всі черги без відключень':'Відключень немає')}
   const nowH=Math.floor(kyivSecs()/3600);let html='';
   for(let h=0;h<24;h++){const a=slots[h*2],b=slots[h*2+1],state=a===b?a:(a==='on'&&b==='off'?'half-a':a==='off'&&b==='on'?'half-b':'unknown');
     html+=`<div class="hour ${state}${dayMode==='today'&&h===nowH?' now':''}">${pad(h)}:00</div>`}
@@ -172,14 +175,26 @@ function renderProfiles(){
   $('queues').innerHTML=profiles.map((p,i)=>`<button class="queue-chip${i===activeProfile?' active':''}" data-i="${i}"><b>${esc(p.name)}</b><small>Черга ${esc(p.queue)}</small></button>`).join('');
   $('editQueue').disabled=!profiles.length;$('deleteQueue').disabled=profiles.length<=1;
 }
+async function pull(list,force){
+  const rs=await Promise.allSettled(list.map(async x=>{const r=await fetch(x.u+(force?'?t='+Date.now():''),{cache:'no-store'});if(!r.ok)throw new Error(x.n+': HTTP '+r.status);const j=await r.json();if(!j?.fact?.data)throw new Error(x.n+': невідомий формат');return{...x,j}}));
+  return{ok:rs.filter(r=>r.status==='fulfilled').map(r=>r.value),err:rs.filter(r=>r.status==='rejected').map(r=>r.reason.message||String(r.reason)).join('; ')};
+}
+const srcTime=j=>{const m=String(j?.fact?.update||'').match(/(\d{2})\.(\d{2})\.(\d{4})\s+(\d{2}):(\d{2})/);return m?Date.UTC(+m[3],+m[2]-1,+m[1],+m[4],+m[5]):0};
 async function load(force=false){
-  if(loading)return;loading=true;let err='';
-  for(const base of DATA_URLS){
-    try{const r=await fetch(base+(force?'?t='+Date.now():''),{cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);const j=await r.json();if(!j?.fact?.data)throw new Error('невідомий формат даних');payload=j;store.set(CACHE_KEY,j);networkState='Графік оновлено о '+stamp(Date.now());err='';break}
-    catch(e){err=e.message||String(e)}
+  if(loading)return;loading=true;
+  const first=await pull(SOURCES,force);let ok=first.ok;
+  if(!ok.length)ok=(await pull(MIRRORS,force)).ok;
+  if(ok.length){
+    ok.sort((a,b)=>srcTime(b.j)-srcTime(a.j));
+    const data={},seen=new Set();
+    for(const o of ok)for(const [k,v] of Object.entries(o.j.fact.data)){const d=dateFromEpoch(Number(k));if(d>=kyivDate()&&!seen.has(d)){seen.add(d);data[k]=v}}
+    payload={...ok[0].j,fact:{...ok[0].j.fact,data}};store.set(CACHE_KEY,payload);
+    const days=[...seen].sort().map(d=>d.slice(8)+'.'+d.slice(5,7)).join(', ');
+    networkState=`Оновлено о ${stamp(Date.now())} · джерело ${payload.fact.update||'—'} (${ok[0].n}) · дні в даних: ${days}`;
+  }else{
+    if(!payload)payload=store.get(CACHE_KEY,null);
+    networkState=payload?`Немає свіжих даних (${first.err}) · показано збережений графік`:`Не вдалося завантажити дані (${first.err})`;
   }
-  if(err){if(!payload)payload=store.get(CACHE_KEY,null);networkState=payload?`Немає свіжих даних (${err}) · показано збережений графік`:`Не вдалося завантажити дані (${err})`}
-  else if(!getDayEntry('today')){const ks=Object.keys(payload.fact.data).map(Number).sort((x,y)=>y-x);networkState+=' · у джерелі немає графіка на сьогодні'+(ks.length?', останній — '+niceDate(dateFromEpoch(ks[0])):'')}
   loading=false;render();
 }
 function openProfile(index=-1){editingIndex=index;const p=index<0?{name:'',queue:''}:profiles[index];$('modalTitle').textContent=index<0?'Додати чергу':'Змінити чергу';$('profileName').value=p.name;$('profileQueue').innerHTML='<option value="">Оберіть чергу</option>'+queueOptions.map(q=>`<option value="${q}">${q}</option>`).join('');$('profileQueue').value=p.queue;$('modal').classList.remove('hidden')}
