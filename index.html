@@ -49,7 +49,7 @@ button:focus-visible,.field:focus-visible{outline:2px solid var(--accent);outlin
 .hour.now{outline:2px solid #fff;outline-offset:1px}
 .hour.off{background:var(--off)}.hour.on{background:var(--on);color:#062b1d}.hour.unknown{background:#526176;color:#fff}
 .hour.half-a{background:linear-gradient(90deg,var(--on) 0 50%,var(--off) 50% 100%);color:#10251c}.hour.half-b{background:linear-gradient(90deg,var(--off) 0 50%,var(--on) 50% 100%);color:#10251c}
-.legend{display:flex;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:12px;margin-top:10px}.dot{width:9px;height:9px;border-radius:3px;display:inline-block;margin-right:5px}.card.news{display:block;text-decoration:none;color:inherit;margin:8px 0;padding:12px 14px}.news b{display:block;font-size:15px;line-height:1.35;margin-bottom:4px}.news small{color:var(--muted);font-size:12px}
+.legend{display:flex;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:12px;margin-top:10px}.dot{width:9px;height:9px;border-radius:3px;display:inline-block;margin-right:5px}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(62px + env(safe-area-inset-bottom));background:#2b3a50;padding:9px 14px;border-radius:12px;font-size:13px;z-index:6}
 .citybar{display:flex;align-items:center;justify-content:space-between;gap:10px}.citybar b{font-size:20px;display:block}
 .weather-main{display:flex;align-items:center;gap:13px}.weather-icon{font-size:44px;line-height:1}.weather-temp{font-size:32px;font-weight:850;letter-spacing:-1px}
@@ -89,13 +89,9 @@ button:focus-visible,.field:focus-visible{outline:2px solid var(--accent);outlin
 <div id="wBody"></div>
 </section>
 
-<section id="view-news" hidden>
-<div id="newsList"></div>
-<p class="statusline" id="newsStatus"></p>
-</section>
 </main>
 
-<nav class="nav" aria-label="Розділи"><button data-view="power"><i>💡</i>Світло</button><button data-view="weather"><i>⛅</i>Погода</button><button data-view="news"><i>📰</i>Новини</button></nav>
+<nav class="nav" aria-label="Розділи"><button data-view="power"><i>💡</i>Світло</button><button data-view="weather"><i>⛅</i>Погода</button></nav>
 
 <div class="toast" id="toast" hidden></div>
 <div class="modal hidden" id="modal"><div class="sheet"><h2 id="modalTitle">Додати чергу</h2><label for="profileName">Назва (наприклад, Дім, Батьки, Робота)</label><input class="field" id="profileName" maxlength="30" placeholder="Дім"><label for="profileQueue">Номер черги</label><select class="field" id="profileQueue"></select><div class="row"><button class="primary" id="saveProfile">Зберегти</button><button class="secondary" id="cancelProfile">Скасувати</button></div></div></div>
@@ -118,7 +114,7 @@ const niceDate=s=>{if(!s)return '';const [y,m,d]=s.split('-');return `${d}.${m}.
 const stamp=ts=>new Intl.DateTimeFormat('uk-UA',{hour:'2-digit',minute:'2-digit'}).format(new Date(ts));
 const kyivSecs=()=>{const p=tzParts({hour:'2-digit',minute:'2-digit',second:'2-digit'},TZ);return +p.hour*3600+ +p.minute*60+ +p.second};
 const pad=n=>String(n).padStart(2,'0');
-const VIEWS={power:'Графік світла',weather:'Погода',news:'Новини'};
+const VIEWS={power:'Графік світла',weather:'Погода'};
 let view=(v=>VIEWS[v]?v:'power')(store.get(VIEW_KEY,'power'));
 
 /* ===== Світло ===== */
@@ -282,38 +278,13 @@ $('citySearch').oninput=e=>{clearTimeout(searchTimer);const q=e.target.value.tri
 $('cityResults').onclick=e=>{const b=e.target.closest('[data-f]');if(b)addCity(found[+b.dataset.f])};
 $('savedCities').onclick=e=>{const d=e.target.closest('[data-del]');if(d)return delCity(+d.dataset.del);const b=e.target.closest('[data-i]');if(b)selectCity(+b.dataset.i)};
 
-/* ===== Новини ===== */
-const FEEDS=[{name:'20 хвилин · Вінниця',url:'https://vn.20minut.ua/rss'}];
-const NEWS_KEY='sv_news_v1';let news=store.get(NEWS_KEY,{ts:0,items:[]}),newsLoading=false,newsFailed=false;
-const dec=t=>{const e=document.createElement('textarea');e.innerHTML=t||'';return e.value.trim()};
-async function fetchFeed(f){
-  try{const r=await fetch('https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent(f.url));const j=await r.json();if(j.status!=='ok')throw 0;
-    return j.items.map(i=>({title:dec(i.title),link:i.link,ts:Date.parse(String(i.pubDate).replace(' ','T')+'Z'),src:f.name}))}
-  catch(_){const r=await fetch('https://api.allorigins.win/raw?url='+encodeURIComponent(f.url));if(!r.ok)throw 0;const x=new DOMParser().parseFromString(await r.text(),'text/xml');
-    return [...x.querySelectorAll('item')].map(i=>{const g=t=>i.querySelector(t)?.textContent||'';return{title:dec(g('title')),link:g('link').trim(),ts:Date.parse(g('pubDate')),src:f.name}})}
-}
-async function loadNews(force){
-  if(newsLoading||(!force&&news.items.length&&Date.now()-news.ts<5*60*1000))return;
-  newsLoading=true;newsFailed=false;renderNews();
-  const res=await Promise.allSettled(FEEDS.map(fetchFeed)),items=res.flatMap(r=>r.status==='fulfilled'?r.value:[]).filter(i=>i.title&&/^https?:\/\//.test(i.link||''));
-  if(items.length){items.sort((a,b)=>(b.ts||0)-(a.ts||0));news={ts:Date.now(),items:items.slice(0,25)};store.set(NEWS_KEY,news)}else newsFailed=true;
-  newsLoading=false;renderNews();
-}
-const ago=ts=>{if(!ts)return '';const m=Math.round((Date.now()-ts)/6e4);return m<1?'щойно':m<60?m+' хв тому':m<1440?Math.floor(m/60)+' год тому':new Intl.DateTimeFormat('uk-UA',{day:'numeric',month:'long'}).format(new Date(ts))};
-function renderNews(){
-  if(view!=='news')return;
-  $('newsList').innerHTML=news.items.length?news.items.map(i=>`<a class="card news" href="${esc(i.link)}" target="_blank" rel="noopener"><b>${esc(i.title)}</b><small>${esc(i.src)} · ${ago(i.ts)}</small></a>`).join(''):`<div class="empty">${newsLoading?'Завантажуємо новини…':'Не вдалося завантажити новини. Перевірте з’єднання та натисніть ↻.'}</div>`;
-  $('newsStatus').textContent=news.ts?(newsFailed?'Немає зв’язку · показано збережені новини · ':'')+'Оновлено о '+stamp(news.ts):'';
-}
-const newsText=()=>news.items.length?'📰 Новини Вінниці\n'+news.items.slice(0,5).map(i=>`• ${i.title}\n${i.link}`).join('\n'):'';
-
 /* ===== Загальне ===== */
 function setView(v){
   view=v;store.set(VIEW_KEY,v);
   Object.keys(VIEWS).forEach(k=>$('view-'+k).hidden=k!==v);
   document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('on',b.dataset.view===v));
   $('title').textContent=VIEWS[v];
-  if(v==='power')render();else if(v==='weather')renderWeather();else{renderNews();loadNews()}
+  if(v==='power')render();else renderWeather()
 }
 document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>setView(b.dataset.view));
 function scheduleText(){
@@ -325,19 +296,19 @@ function scheduleText(){
 }
 let toastT;function toast(t){const el=$('toast');el.textContent=t;el.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>el.hidden=true,2200)}
 $('share').onclick=async()=>{
-  const text=view==='power'?scheduleText():view==='weather'?wText:view==='news'?newsText():'';
+  const text=view==='power'?scheduleText():view==='weather'?wText:'';
   if(!text){toast(view==='power'?'Спочатку додайте чергу':'Поки немає що надсилати');return}
   if(navigator.share){try{await navigator.share({text});return}catch(e){if(e.name==='AbortError')return}}
   try{await navigator.clipboard.writeText(text);toast('Текст скопійовано')}catch(_){}
   location.href='viber://forward?text='+encodeURIComponent(text);
 };
-$('refresh').onclick=()=>{if(view==='news')loadNews(true);else{load(true);loadWeather()}};
-document.addEventListener('visibilitychange',()=>{if(!document.hidden){render();renderWeather();load();loadWeather();if(view==='news')loadNews()}});
+$('refresh').onclick=()=>{load(true);loadWeather()};
+document.addEventListener('visibilitychange',()=>{if(!document.hidden){render();renderWeather();load();loadWeather()}});
 
 loadProfiles();renderProfiles();payload=store.get(CACHE_KEY,null);
 setView(view);load();loadWeather();
 setInterval(()=>{if(view==='power')renderCountdown()},1000);
-setInterval(()=>load(),5*60*1000);setInterval(()=>{if(view==='news')loadNews()},10*60*1000);setInterval(()=>loadWeather(),30*60*1000);
+setInterval(()=>load(),5*60*1000);setInterval(()=>loadWeather(),30*60*1000);
 if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
 </script>
 </body>
